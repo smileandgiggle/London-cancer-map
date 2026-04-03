@@ -352,14 +352,16 @@ function getMPHtml(name) {
   if (!mps || mps.length === 0) {
     return h + '<p style="font-size:11px;color:#999;margin-bottom:12px">No MP data found.</p>';
   }
-  mps.forEach(function(mp) {
+  mps.forEach(function(mp, idx) {
     var col = mp.colour || "#999";
+    var key = "brief_" + name.replace(/\s+/g,"_") + "_" + idx;
+    window[key] = { borough: name, name: mp.name, party: mp.party, constituency: mp.constituency };
     h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;background:#f8f9fa;border-radius:6px;border-left:4px solid ' + col + ';padding:8px 10px">'
       + '<div>'
       + '<div style="font-size:12px;font-weight:600;color:#1a1a1a">' + mp.name + '</div>'
       + '<div style="font-size:11px;color:#555;margin-top:2px">' + mp.party + ' \u00b7 ' + mp.constituency + '</div>'
       + '</div>'
-      + '<button onclick="generateBriefing(' + JSON.stringify(name) + ',' + JSON.stringify(mp.name) + ',' + JSON.stringify(mp.party) + ',' + JSON.stringify(mp.constituency) + ')" '
+      + '<button onclick="var d=window[' + "'" + key + "'" + '];generateBriefing(d.borough,d.name,d.party,d.constituency)" '
       + 'style="flex-shrink:0;margin-left:8px;background:#1a1a4e;color:white;border:none;border-radius:5px;padding:5px 9px;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap">'
       + '\uD83D\uDCC4 Briefing</button>'
       + '</div>';
