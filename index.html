@@ -167,7 +167,7 @@
     <div class="sb-body" id="sb-body">
       <div class="hint">Click on any London borough to see cancer risk indicators, NHS waiting times, and screening uptake rates.</div>
     </div>
-    <div class="note"><b>Data note:</b> Estimates based on OHID Fingertips, NHS England, ONS. Connect to live APIs before publishing to MPs.</div>
+    <div class="note"><b>Data note:</b> Live data from OHID Fingertips. Smoking, obesity and deprivation are borough-level. Cancer incidence and screening are ICB-level (smallest published geography). Late-stage diagnosis and 62-day wait are borough-level estimates.</div>
   </aside>
 </div>
 
@@ -225,6 +225,84 @@ function getStyle(feature) {
   };
 }
 
+var STATIC_MPs = {
+  "Barking": {name:"Nesil Caliskan", party:"Labour", colour:"#d50000"},
+  "Battersea": {name:"Marsha de Cordova", party:"Labour", colour:"#d50000"},
+  "Beckenham and Penge": {name:"Liam Conlon", party:"Labour", colour:"#d50000"},
+  "Bermondsey and Old Southwark": {name:"Neil Coyle", party:"Labour", colour:"#d50000"},
+  "Bethnal Green and Stepney": {name:"Rushanara Ali", party:"Labour", colour:"#d50000"},
+  "Bexleyheath and Crayford": {name:"Daniel Francis", party:"Labour", colour:"#d50000"},
+  "Brent East": {name:"Dawn Butler", party:"Labour", colour:"#d50000"},
+  "Brent West": {name:"Barry Gardiner", party:"Labour", colour:"#d50000"},
+  "Brentford and Isleworth": {name:"Ruth Cadbury", party:"Labour", colour:"#d50000"},
+  "Bromley and Biggin Hill": {name:"Peter Fortune", party:"Conservative", colour:"#0063ba"},
+  "Carshalton and Wallington": {name:"Bobby Dean", party:"Liberal Democrats", colour:"#fc7d0b"},
+  "Chelsea and Fulham": {name:"Ben Coleman", party:"Labour", colour:"#d50000"},
+  "Chingford and Woodford Green": {name:"Iain Duncan Smith", party:"Conservative", colour:"#0063ba"},
+  "Chipping Barnet": {name:"Dan Tomlinson", party:"Labour", colour:"#d50000"},
+  "Cities of London and Westminster": {name:"Rachel Blake", party:"Labour", colour:"#d50000"},
+  "Clapham and Brixton Hill": {name:"Bell Ribeiro-Addy", party:"Labour", colour:"#d50000"},
+  "Croydon East": {name:"Natasha Irons", party:"Labour", colour:"#d50000"},
+  "Croydon South": {name:"Chris Philp", party:"Conservative", colour:"#0063ba"},
+  "Croydon West": {name:"Sarah Jones", party:"Labour", colour:"#d50000"},
+  "Dagenham and Rainham": {name:"Margaret Mullane", party:"Labour", colour:"#d50000"},
+  "Dulwich and West Norwood": {name:"Helen Hayes", party:"Labour", colour:"#d50000"},
+  "Ealing Central and Acton": {name:"Rupa Huq", party:"Labour", colour:"#d50000"},
+  "Ealing North": {name:"James Murray", party:"Labour", colour:"#d50000"},
+  "Ealing Southall": {name:"Deirdre Costigan", party:"Labour", colour:"#d50000"},
+  "East Ham": {name:"Stephen Timms", party:"Labour", colour:"#d50000"},
+  "Edmonton and Winchmore Hill": {name:"Kate Osamor", party:"Labour", colour:"#d50000"},
+  "Eltham and Chislehurst": {name:"Clive Efford", party:"Labour", colour:"#d50000"},
+  "Enfield North": {name:"Feryal Clark", party:"Labour", colour:"#d50000"},
+  "Erith and Thamesmead": {name:"Abena Oppong-Asare", party:"Labour", colour:"#d50000"},
+  "Feltham and Heston": {name:"Seema Malhotra", party:"Labour", colour:"#d50000"},
+  "Finchley and Golders Green": {name:"Sarah Sackman", party:"Labour", colour:"#d50000"},
+  "Greenwich and Woolwich": {name:"Matthew Pennycook", party:"Labour", colour:"#d50000"},
+  "Hackney North and Stoke Newington": {name:"Diane Abbott", party:"Independent", colour:"#909090"},
+  "Hackney South and Shoreditch": {name:"Meg Hillier", party:"Labour", colour:"#d50000"},
+  "Hammersmith and Chiswick": {name:"Andy Slaughter", party:"Labour", colour:"#d50000"},
+  "Hampstead and Highgate": {name:"Tulip Siddiq", party:"Labour", colour:"#d50000"},
+  "Harrow East": {name:"Bob Blackman", party:"Conservative", colour:"#0063ba"},
+  "Harrow West": {name:"Gareth Thomas", party:"Labour", colour:"#d50000"},
+  "Hayes and Harlington": {name:"John McDonnell", party:"Labour", colour:"#d50000"},
+  "Hendon": {name:"David Pinto-Duschinsky", party:"Labour", colour:"#d50000"},
+  "Holborn and St Pancras": {name:"Keir Starmer", party:"Labour", colour:"#d50000"},
+  "Hornchurch and Upminster": {name:"Julia Lopez", party:"Conservative", colour:"#0063ba"},
+  "Hornsey and Friern Barnet": {name:"Catherine West", party:"Labour", colour:"#d50000"},
+  "Ilford North": {name:"Wes Streeting", party:"Labour", colour:"#d50000"},
+  "Ilford South": {name:"Jas Athwal", party:"Labour", colour:"#d50000"},
+  "Islington North": {name:"Jeremy Corbyn", party:"Independent", colour:"#909090"},
+  "Islington South and Finsbury": {name:"Emily Thornberry", party:"Labour", colour:"#d50000"},
+  "Kensington and Bayswater": {name:"Joe Powell", party:"Labour", colour:"#d50000"},
+  "Kingston and Surbiton": {name:"Ed Davey", party:"Liberal Democrats", colour:"#fc7d0b"},
+  "Lewisham East": {name:"Janet Daby", party:"Labour", colour:"#d50000"},
+  "Lewisham North": {name:"Vicky Foxcroft", party:"Labour", colour:"#d50000"},
+  "Lewisham West and East Dulwich": {name:"Ellie Reeves", party:"Labour", colour:"#d50000"},
+  "Leyton and Wanstead": {name:"Calvin Bailey", party:"Labour", colour:"#d50000"},
+  "Mitcham and Morden": {name:"Siobhain McDonagh", party:"Labour", colour:"#d50000"},
+  "Old Bexley and Sidcup": {name:"Louie French", party:"Conservative", colour:"#0063ba"},
+  "Orpington": {name:"Gareth Bacon", party:"Conservative", colour:"#0063ba"},
+  "Peckham": {name:"Miatta Fahnbulleh", party:"Labour", colour:"#d50000"},
+  "Poplar and Limehouse": {name:"Apsana Begum", party:"Labour", colour:"#d50000"},
+  "Putney": {name:"Fleur Anderson", party:"Labour", colour:"#d50000"},
+  "Queen's Park and Maida Vale": {name:"Georgia Gould", party:"Labour", colour:"#d50000"},
+  "Richmond Park": {name:"Sarah Olney", party:"Liberal Democrats", colour:"#fc7d0b"},
+  "Romford": {name:"Andrew Rosindell", party:"Reform UK", colour:"#12b6cf"},
+  "Ruislip, Northwood and Pinner": {name:"David Simmonds", party:"Conservative", colour:"#0063ba"},
+  "Southgate and Wood Green": {name:"Bambos Charalambous", party:"Labour", colour:"#d50000"},
+  "Stratford and Bow": {name:"Uma Kumaran", party:"Labour", colour:"#d50000"},
+  "Streatham and Croydon North": {name:"Steve Reed", party:"Labour", colour:"#d50000"},
+  "Sutton and Cheam": {name:"Luke Taylor", party:"Liberal Democrats", colour:"#fc7d0b"},
+  "Tooting": {name:"Rosena Allin-Khan", party:"Labour", colour:"#d50000"},
+  "Tottenham": {name:"David Lammy", party:"Labour", colour:"#d50000"},
+  "Twickenham": {name:"Munira Wilson", party:"Liberal Democrats", colour:"#fc7d0b"},
+  "Uxbridge and South Ruislip": {name:"Danny Beales", party:"Labour", colour:"#d50000"},
+  "Vauxhall and Camberwell Green": {name:"Florence Eshalomi", party:"Labour", colour:"#d50000"},
+  "Walthamstow": {name:"Stella Creasy", party:"Labour", colour:"#d50000"},
+  "West Ham and Beckton": {name:"James Asser", party:"Labour", colour:"#d50000"},
+  "Wimbledon": {name:"Paul Kohler", party:"Liberal Democrats", colour:"#fc7d0b"}
+};
+
 var MP_DATA = {};
 var BOROUGH_CONSTITUENCIES = {
   "Barking and Dagenham": ["Barking", "Dagenham and Rainham"],
@@ -262,6 +340,19 @@ var BOROUGH_CONSTITUENCIES = {
   "Westminster": ["Cities of London and Westminster"]
 };
 
+// Pre-populate from static data; live API will overwrite if available
+(function() {
+  Object.keys(BOROUGH_CONSTITUENCIES).forEach(function(borough) {
+    MP_DATA[borough] = [];
+    BOROUGH_CONSTITUENCIES[borough].forEach(function(c) {
+      if (STATIC_MPs[c]) {
+        var s = STATIC_MPs[c];
+        MP_DATA[borough].push({ constituency: c, name: s.name, party: s.party, colour: s.colour });
+      }
+    });
+  });
+})();
+
 function getMPHtml(name) {
   var mps = MP_DATA[name];
   var h = '<div class="sec">Local MPs</div>';
@@ -283,21 +374,33 @@ function getMPHtml(name) {
 }
 
 function loadMPs() {
-  fetch("https://members-api.parliament.uk/api/Members/Search?House=Commons&IsCurrentMember=true&skip=0&take=650")
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      var byConst = {};
-      (data.items || []).forEach(function(item) {
-        var m = item.value;
-        var c = m.latestHouseMembership && m.latestHouseMembership.membershipFrom;
-        if (c) {
-          byConst[c] = {
-            name: m.nameDisplayAs,
-            party: m.latestParty ? m.latestParty.name : "Unknown",
-            colour: m.latestParty ? "#" + m.latestParty.backgroundColour : "#999"
-          };
+  var byConst = {};
+  var PAGE = 20;
+
+  function fetchPage(skip, total) {
+    return fetch("https://members-api.parliament.uk/api/Members/Search?House=Commons&IsCurrentMember=true&skip=" + skip + "&take=" + PAGE)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var realTotal = data.totalResults || total || 650;
+        (data.items || []).forEach(function(item) {
+          var m = item.value;
+          var c = m.latestHouseMembership && m.latestHouseMembership.membershipFrom;
+          if (c) {
+            byConst[c] = {
+              name: m.nameDisplayAs,
+              party: m.latestParty ? m.latestParty.name : "Unknown",
+              colour: m.latestParty ? "#" + m.latestParty.backgroundColour : "#999"
+            };
+          }
+        });
+        if (skip + PAGE < realTotal) {
+          return fetchPage(skip + PAGE, realTotal);
         }
       });
+  }
+
+  fetchPage(0, 650)
+    .then(function() {
       Object.keys(BOROUGH_CONSTITUENCIES).forEach(function(borough) {
         MP_DATA[borough] = [];
         BOROUGH_CONSTITUENCIES[borough].forEach(function(c) {
@@ -322,13 +425,18 @@ function showBorough(name) {
   }
   document.getElementById("sb-sub").textContent = d.code + "  \u00b7  ICB: " + d.icb;
 
-  function card(key, label, val, unit, src, live) {
+  function card(key, label, val, unit, src, live, liveType) {
     var r = rating(key, val);
     var g = Math.round(goodness(key, val) * 100);
     var bc = r === "good" ? "#2e7d32" : r === "mod" ? "#f57f17" : "#c62828";
-    var badge = live
-      ? '<span style="float:right;font-size:9px;background:#e8f5e9;color:#1b5e20;border-radius:3px;padding:1px 5px;font-weight:600;margin-left:4px">LIVE ' + live + '</span>'
-      : '<span style="float:right;font-size:9px;background:#fff8e1;color:#795548;border-radius:3px;padding:1px 5px;margin-left:4px">estimate</span>';
+    var badge;
+    if (live && liveType === "icb") {
+      badge = '<span style="float:right;font-size:9px;background:#e3f2fd;color:#0d47a1;border-radius:3px;padding:1px 5px;font-weight:600;margin-left:4px">ICB · ' + live + '</span>';
+    } else if (live) {
+      badge = '<span style="float:right;font-size:9px;background:#e8f5e9;color:#1b5e20;border-radius:3px;padding:1px 5px;font-weight:600;margin-left:4px">LIVE · ' + live + '</span>';
+    } else {
+      badge = '<span style="float:right;font-size:9px;background:#fff8e1;color:#795548;border-radius:3px;padding:1px 5px;margin-left:4px">borough estimate</span>';
+    }
     return '<div class="card ' + r + '">'
       + '<div class="card-row"><span class="card-label">' + label + badge + '</span>'
       + '<span class="card-val">' + val + '<small> ' + unit + '</small></span></div>'
@@ -344,17 +452,17 @@ function showBorough(name) {
     + '<div class="pill"><b>' + d.wait62 + '%</b>62-day wait met</div>'
     + '</div>'
     + '<div class="sec">Risk Factors</div>'
-    + card("imd",       "Deprivation (IMD score)",    d.imd,       "",      METRICS.imd.src,     (LIVE_PERIODS[name]&&LIVE_PERIODS[name].imd)      ? "Live · "+LIVE_PERIODS[name].imd      : null)
-    + card("smoking",   "Smoking prevalence",          d.smoking,   "%",     METRICS.smoking.src, (LIVE_PERIODS[name]&&LIVE_PERIODS[name].smoking)   ? "Live · "+LIVE_PERIODS[name].smoking   : null)
-    + card("obesity",   "Obesity prevalence",          d.obesity,   "%",     METRICS.obesity.src, (LIVE_PERIODS[name]&&LIVE_PERIODS[name].obesity)   ? "Live · "+LIVE_PERIODS[name].obesity    : null)
+    + card("imd",       "Deprivation (IMD score)",    d.imd,       "",      METRICS.imd.src,     (LIVE_PERIODS[name]&&LIVE_PERIODS[name].imd)     ? LIVE_PERIODS[name].imd     : null, "borough")
+    + card("smoking",   "Smoking prevalence",          d.smoking,   "%",     METRICS.smoking.src, (LIVE_PERIODS[name]&&LIVE_PERIODS[name].smoking)  ? LIVE_PERIODS[name].smoking  : null, "borough")
+    + card("obesity",   "Obesity prevalence",          d.obesity,   "%",     METRICS.obesity.src, (LIVE_PERIODS[name]&&LIVE_PERIODS[name].obesity)  ? LIVE_PERIODS[name].obesity  : null, "borough")
     + '<div class="sec">Cancer Outcomes</div>'
-    + card("incidence", "Cancer incidence rate",       d.incidence, "/100k", METRICS.incidence.src)
-    + card("latestage", "Late-stage diagnosis",        d.latestage, "%",     METRICS.latestage.src)
+    + card("incidence", "Cancer incidence rate",       d.incidence, "/100k", METRICS.incidence.src, (ICB_PERIODS[name]&&ICB_PERIODS[name].incidence) ? ICB_PERIODS[name].incidence : null, "icb")
+    + card("latestage", "Late-stage diagnosis",        d.latestage, "%",     METRICS.latestage.src, null)
     + '<div class="sec">NHS Access &amp; Screening</div>'
-    + card("wait62",    "62-day referral standard",    d.wait62,    "%",     METRICS.wait62.src)
-    + card("bowel",     "Bowel screening uptake",      d.bowel,     "%",     METRICS.bowel.src)
-    + card("breast",    "Breast screening uptake",     d.breast,    "%",     METRICS.breast.src)
-    + card("cervical",  "Cervical screening uptake",   d.cervical,  "%",     METRICS.cervical.src)
+    + card("wait62",    "62-day referral standard",    d.wait62,    "%",     METRICS.wait62.src,    null)
+    + card("bowel",     "Bowel screening uptake",      d.bowel,     "%",     METRICS.bowel.src,     (ICB_PERIODS[name]&&ICB_PERIODS[name].bowel)     ? ICB_PERIODS[name].bowel     : null, "icb")
+    + card("breast",    "Breast screening uptake",     d.breast,    "%",     METRICS.breast.src,    (ICB_PERIODS[name]&&ICB_PERIODS[name].breast)    ? ICB_PERIODS[name].breast    : null, "icb")
+    + card("cervical",  "Cervical screening uptake",   d.cervical,  "%",     METRICS.cervical.src,  (ICB_PERIODS[name]&&ICB_PERIODS[name].cervical)  ? ICB_PERIODS[name].cervical  : null, "icb")
     + '<div class="sources"><p>Data sources</p>'
     + '<a class="src-link" href="https://fingertips.phe.org.uk" target="_blank">OHID Fingertips</a>'
     + '<a class="src-link" href="https://www.cancerdata.nhs.uk" target="_blank">NHS Cancer Data</a>'
@@ -410,17 +518,37 @@ document.querySelectorAll(".mbtn").forEach(function(btn) {
 });
 
 // ── Live data from OHID Fingertips (via CORS proxy) ──────────────────────────
-// Smoking (92443), Obesity (93088), IMD (93553) are available at borough level.
-// Screening and cancer data is only at ICB/GP level, so those remain as estimates.
+// Borough-level (area_type 401): Smoking, Obesity, IMD
+// ICB-level (area_type 221):     Cancer incidence, Bowel/Breast/Cervical screening
+// Late-stage diagnosis & 62-day wait: not published at borough or ICB level in Fingertips
 var LIVE_PERIODS = {};
+var ICB_PERIODS = {};
+
+// ICB name → Fingertips area code
+var ICB_CODES = {
+  "North Central London": "E54000027",
+  "North East London":    "E54000028",
+  "North West London":    "E54000029",
+  "South East London":    "E54000030",
+  "South West London":    "E54000031"
+};
+
 var INDICATORS = {
   smoking: { id: "92443", sex: "Persons", age: "18+ yrs" },
   obesity:  { id: "93088", sex: "Persons", age: "18+ yrs" },
   imd:      { id: "93553", sex: "Persons", age: "All ages" }
 };
+
+var ICB_INDICATORS = {
+  incidence: { id: "91337", sex: "Persons", age: "All ages" },
+  bowel:     { id: "92601", sex: "Persons", age: "60-74 yrs" },
+  breast:    { id: "91340", sex: "Female",  age: "50-70 yrs" },
+  cervical:  { id: "93726", sex: "Female",  age: "50-64 yrs" }
+};
+
 var statusEl = document.getElementById("api-status");
 
-function parseFingerCSV(text, sex, age) {
+function parseFingerCSV(text, sex, age, areaPrefix) {
   var lines = text.split("\n");
   if (lines.length < 2) return {};
   var h = lines[0].split(",").map(function(x){return x.trim();});
@@ -431,15 +559,15 @@ function parseFingerCSV(text, sex, age) {
   for (var i=1;i<lines.length;i++){
     var c=lines[i].split(",");
     if(!c[I["Area Code"]]) continue;
-    if(c[I["Area Code"]].trim().indexOf("E09")!==0) continue;
-    if(c[I["Sex"]].trim()!==sex) continue;
-    if(c[I["Age"]].trim()!==age) continue;
+    if(c[I["Area Code"]].trim().indexOf(areaPrefix)!==0) continue;
+    if(sex && c[I["Sex"]].trim()!==sex) continue;
+    if(age && c[I["Age"]].trim()!==age) continue;
     if(c[I["Category Type"]]&&c[I["Category Type"]].trim()!=="") continue;
-    var name=c[I["Area Name"]].trim();
+    var aname=c[I["Area Name"]].trim();
     var sort=parseInt(c[I["Time period Sortable"]])||0;
-    if(!latest[name]||sort>latest[name].sort){
+    if(!latest[aname]||sort>latest[aname].sort){
       var val=parseFloat(c[I["Value"]]);
-      if(!isNaN(val)) latest[name]={value:val,period:c[I["Time period"]].trim(),sort:sort};
+      if(!isNaN(val)) latest[aname]={value:val,period:c[I["Time period"]].trim(),sort:sort};
     }
   }
   return latest;
@@ -451,29 +579,63 @@ function fetchOne(key,cfg){
     +"?indicator_ids="+cfg.id+"&child_area_type_id=401&parent_area_code=E12000007";
   return fetch(proxy+encodeURIComponent(api))
     .then(function(r){return r.text();})
-    .then(function(t){return{key:key,data:parseFingerCSV(t,cfg.sex,cfg.age)};});
+    .then(function(t){return{key:key,data:parseFingerCSV(t,cfg.sex,cfg.age,"E09")};});
+}
+
+function fetchICB(key,cfg){
+  var proxy="https://corsproxy.io/?url=";
+  var api="https://fingertips.phe.org.uk/api/all_data/csv/by_indicator_id"
+    +"?indicator_ids="+cfg.id+"&child_area_type_id=221&parent_area_code=E40000003";
+  return fetch(proxy+encodeURIComponent(api))
+    .then(function(r){return r.text();})
+    .then(function(t){return{key:key,data:parseFingerCSV(t,cfg.sex,cfg.age,"E540")};});
 }
 
 function loadLiveData(){
   if(statusEl) statusEl.textContent="\u29d7 Fetching live data\u2026";
-  Promise.all(Object.keys(INDICATORS).map(function(k){return fetchOne(k,INDICATORS[k]);}))
+
+  var boroughFetches = Object.keys(INDICATORS).map(function(k){return fetchOne(k,INDICATORS[k]);});
+  var icbFetches = Object.keys(ICB_INDICATORS).map(function(k){return fetchICB(k,ICB_INDICATORS[k]);});
+
+  Promise.all(boroughFetches.concat(icbFetches))
   .then(function(results){
-    results.forEach(function(res){
-      Object.keys(res.data).forEach(function(name){
-        if(BD[name]){
-          BD[name][res.key]=parseFloat(res.data[name].value.toFixed(1));
-          if(!LIVE_PERIODS[name]) LIVE_PERIODS[name]={};
-          LIVE_PERIODS[name][res.key]=res.data[name].period;
+    // Borough-level results (smoking, obesity, imd)
+    results.slice(0,3).forEach(function(res){
+      Object.keys(res.data).forEach(function(aname){
+        if(BD[aname]){
+          BD[aname][res.key]=parseFloat(res.data[aname].value.toFixed(1));
+          if(!LIVE_PERIODS[aname]) LIVE_PERIODS[aname]={};
+          LIVE_PERIODS[aname][res.key]=res.data[aname].period;
         }
       });
     });
+    // ICB-level results (incidence, bowel, breast, cervical)
+    // Build ICB name → data map, then apply to each borough via BD[name].icb
+    results.slice(3).forEach(function(res){
+      // res.data is keyed by ICB area name e.g. "NHS North West London ICB"
+      // Normalise: strip "NHS " prefix and " ICB" suffix to match our ICB_CODES keys
+      var icbData = {};
+      Object.keys(res.data).forEach(function(aname){
+        var norm = aname.replace(/^NHS\s+/,"").replace(/\s+ICB$/,"");
+        icbData[norm] = res.data[aname];
+      });
+      Object.keys(BD).forEach(function(borough){
+        var icbName = BD[borough].icb;
+        if(icbData[icbName]){
+          BD[borough][res.key] = parseFloat(icbData[icbName].value.toFixed(1));
+          if(!ICB_PERIODS[borough]) ICB_PERIODS[borough]={};
+          ICB_PERIODS[borough][res.key] = icbData[icbName].period;
+        }
+      });
+    });
+
     geojsonLayer.setStyle(getStyle);
     if(statusEl) statusEl.innerHTML='\u2705 Live data loaded (OHID Fingertips)';
     var n=document.getElementById("sb-name").textContent;
     if(n&&BD[n]) showBorough(n);
   }).catch(function(err){
     console.warn("Fingertips API error:",err);
-    if(statusEl) statusEl.innerHTML='\u26a0\ufe0f Using embedded estimates';
+    if(statusEl) statusEl.innerHTML='\u26a0\ufe0f Could not load live data';
   });
 }
 loadLiveData();
