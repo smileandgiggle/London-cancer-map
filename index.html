@@ -109,8 +109,22 @@
     #pdf-frame .pdf-badge.live { background:#e8f5e9; color:#1b5e20 }
     #pdf-frame .pdf-badge.icb  { background:#e3f2fd; color:#0d47a1 }
     #pdf-frame .pdf-badge.est  { background:#fff8e1; color:#795548 }
-    #pdf-frame .pdf-cta { margin-top:4px; background:#fff8e1; border:1px solid #ffe082; border-radius:8px; padding:14px 16px; font-size:11px; line-height:1.75; color:#333 }
+    #pdf-frame .pdf-keyfacts { margin:16px 32px 0; background:#fce4ec; border:1px solid #f48fb1; border-radius:8px; padding:14px 18px }
+    #pdf-frame .pdf-keyfacts-title { font-size:9px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:#880e4f; margin-bottom:10px }
+    #pdf-frame .pdf-keyfacts-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px }
+    #pdf-frame .pdf-fact { text-align:center }
+    #pdf-frame .pdf-fact-num { font-size:20px; font-weight:800; color:#880e4f; line-height:1 }
+    #pdf-frame .pdf-fact-text { font-size:9px; color:#555; margin-top:3px; line-height:1.4 }
+    #pdf-frame .pdf-fact-link { font-size:8px; color:#c62828; text-decoration:none; display:block; margin-top:2px }
+    #pdf-frame .pdf-section-link { font-size:9px; color:#1a1a4e; text-decoration:none; float:right; font-weight:400; text-transform:none; letter-spacing:0 }
+    #pdf-frame .pdf-cta { margin-top:4px; background:#e8eaf6; border:1px solid #c5cae9; border-radius:8px; padding:16px 18px; font-size:11px; line-height:1.8; color:#333 }
     #pdf-frame .pdf-cta strong { color:#1a1a4e }
+    #pdf-frame .pdf-cta-asks { margin:10px 0; padding-left:0; list-style:none }
+    #pdf-frame .pdf-cta-asks li { padding:4px 0 4px 16px; position:relative; font-size:11px }
+    #pdf-frame .pdf-cta-asks li::before { content:"\2192"; position:absolute; left:0; color:#e4003b; font-weight:700 }
+    #pdf-frame .pdf-cta-links { margin-top:12px; display:flex; flex-wrap:wrap; gap:8px }
+    #pdf-frame .pdf-cta-link { display:inline-block; background:#1a1a4e; color:white; border-radius:5px; padding:5px 10px; font-size:10px; font-weight:600; text-decoration:none }
+    #pdf-frame .pdf-cta-link:hover { background:#2a2a6e }
     #pdf-frame .pdf-legend { display:flex; gap:14px; margin:14px 0 0; font-size:9px; color:#666; align-items:center }
     #pdf-frame .pdf-legend-item { display:flex; align-items:center; gap:4px }
     #pdf-frame .pdf-legend-swatch { width:12px; height:12px; border-radius:2px }
@@ -444,6 +458,15 @@ function generateBriefing(borough, mpName, mpParty, mpConstituency) {
 
     + '<div class="pdf-intro-box">This briefing summarises key cancer risk indicators, NHS performance and screening uptake for <strong>' + borough + '</strong>, where your constituency is located. Where data points are above or below the London average, this is highlighted. Cancer Research UK\u2019s Influencing Team is available to discuss these findings and how they relate to policy priorities in your area.</div>'
 
+    + '<div class="pdf-keyfacts">'
+    + '<div class="pdf-keyfacts-title">Cancer in the UK \u2014 Key Facts</div>'
+    + '<div class="pdf-keyfacts-grid">'
+    + '<div class="pdf-fact"><div class="pdf-fact-num">1 in 2</div><div class="pdf-fact-text">people will be diagnosed with cancer in their lifetime</div><a class="pdf-fact-link" href="https://www.cancerresearchuk.org/health-professional/cancer-statistics/incidence" target="_blank">cancerresearchuk.org/statistics</a></div>'
+    + '<div class="pdf-fact"><div class="pdf-fact-num">3x</div><div class="pdf-fact-text">more likely to survive if diagnosed at stage 1 vs stage 4</div><a class="pdf-fact-link" href="https://www.cancerresearchuk.org/about-cancer/cancer-symptoms/why-is-early-diagnosis-important" target="_blank">Early diagnosis &rarr;</a></div>'
+    + '<div class="pdf-fact"><div class="pdf-fact-num">360k</div><div class="pdf-fact-text">new cancer cases diagnosed in the UK every year</div><a class="pdf-fact-link" href="https://www.cancerresearchuk.org/health-professional/cancer-statistics" target="_blank">Cancer statistics &rarr;</a></div>'
+    + '</div>'
+    + '</div>'
+
     // ── Borough header ────────────────────────────────────────────────────────
     + '<div class="pdf-borough-band">'
     + '<div>'
@@ -458,18 +481,18 @@ function generateBriefing(borough, mpName, mpParty, mpConstituency) {
 
     // ── Data body ─────────────────────────────────────────────────────────────
     + '<div class="pdf-body">'
-    + '<div class="pdf-section">Risk Factors</div>'
+    + '<div class="pdf-section">Risk Factors<a class="pdf-section-link" href="https://www.cancerresearchuk.org/health-professional/cancer-statistics/risk" target="_blank">CRUK risk statistics \u2192</a></div>'
     + '<div class="pdf-grid">'
     + pdfCard("Deprivation (IMD score)", d.imd, "", lp("imd") ? "live" : "est", lp("imd"), "imd")
     + pdfCard("Smoking prevalence", d.smoking, "%", lp("smoking") ? "live" : "est", lp("smoking"), "smoking")
     + pdfCard("Obesity prevalence", d.obesity, "%", lp("obesity") ? "live" : "est", lp("obesity"), "obesity")
     + '</div>'
-    + '<div class="pdf-section">Cancer Outcomes</div>'
+    + '<div class="pdf-section">Cancer Outcomes<a class="pdf-section-link" href="https://www.cancerresearchuk.org/health-professional/cancer-statistics/incidence" target="_blank">CRUK incidence data \u2192</a></div>'
     + '<div class="pdf-grid">'
     + pdfCard("Cancer incidence rate", d.incidence, "/100k", ip("incidence") ? "icb" : "est", ip("incidence"), "incidence")
     + pdfCard("Late-stage diagnosis", d.latestage, "%", "est", null, "latestage")
     + '</div>'
-    + '<div class="pdf-section">NHS Access &amp; Screening</div>'
+    + '<div class="pdf-section">NHS Access &amp; Screening<a class="pdf-section-link" href="https://www.cancerresearchuk.org/about-cancer/screening" target="_blank">CRUK screening info \u2192</a></div>'
     + '<div class="pdf-grid">'
     + pdfCard("62-day referral standard", d.wait62, "%", "est", null, "wait62")
     + pdfCard("Bowel screening uptake", d.bowel, "%", ip("bowel") ? "icb" : "est", ip("bowel"), "bowel")
@@ -484,7 +507,20 @@ function generateBriefing(borough, mpName, mpParty, mpConstituency) {
     + '<div style="margin-left:auto;font-size:9px;color:#aaa">\u2502 = London average</div>'
     + '</div>'
 
-    + '<div class="pdf-cta"><strong>Cancer Research UK is calling for:</strong> improved early diagnosis rates, better screening uptake and reduced waiting times across London. We would welcome the opportunity to discuss what targeted policy action could make the greatest difference for residents in ' + borough + '.<br><br>To arrange a meeting, contact the Influencing Team at <strong>cancerresearchuk.org</strong></div>'
+    + '<div class="pdf-cta"><strong>Cancer Research UK is calling on MPs to act on cancer:</strong>'
+    + '<ul class="pdf-cta-asks">'
+    + '<li>Back an independently-led NHS cancer plan with a clear target to diagnose 75% of cancers at stage 1 or 2</li>'
+    + '<li>Increase investment in cancer screening programmes to close the uptake gap in deprived areas</li>'
+    + '<li>End unacceptable waits \u2014 ensure all patients are seen within 62 days of urgent referral</li>'
+    + '<li>Support the cancer workforce to tackle the backlog and prevent future waiting time crises</li>'
+    + '</ul>'
+    + 'We would welcome the opportunity to meet with you to discuss what this means for residents in ' + borough + '.'
+    + '<div class="pdf-cta-links">'
+    + '<a class="pdf-cta-link" href="https://www.cancerresearchuk.org/get-involved/cancer-campaigns" target="_blank">Our campaigns</a>'
+    + '<a class="pdf-cta-link" href="https://www.cancerresearchuk.org/health-professional/cancer-statistics" target="_blank">Cancer statistics</a>'
+    + '<a class="pdf-cta-link" href="https://www.cancerresearchuk.org/about-cancer/screening" target="_blank">Screening information</a>'
+    + '<a class="pdf-cta-link" href="https://www.cancerresearchuk.org/about-us/contact-us" target="_blank">Contact the Influencing Team</a>'
+    + '</div></div>'
 
     + '</div>'
 
