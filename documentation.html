@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>London Cancer Data Observatory — Documentation</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 820px; margin: 48px auto; padding: 0 32px; color: #222; line-height: 1.7; }
+  h1 { font-size: 24px; color: #1a1a4e; border-bottom: 3px solid #e4003b; padding-bottom: 10px; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #777; margin-bottom: 32px; }
+  h2 { font-size: 16px; color: #1a1a4e; margin-top: 36px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .6px; }
+  h3 { font-size: 14px; color: #333; margin-bottom: 4px; }
+  p { margin: 0 0 14px; font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 24px; }
+  th { background: #1a1a4e; color: white; text-align: left; padding: 9px 12px; font-weight: 600; }
+  td { padding: 8px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+  tr:nth-child(even) td { background: #f9f9f9; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; border-radius: 4px; padding: 2px 7px; }
+  .tag-live { background: #e8f5e9; color: #2e7d32; }
+  .tag-icb { background: #e3f2fd; color: #1565c0; }
+  .tag-est { background: #fff3e0; color: #e65100; }
+  .tag-manual { background: #fce4ec; color: #880e4f; }
+  .note { background: #f5f5f5; border-left: 4px solid #1a1a4e; padding: 12px 16px; font-size: 13px; margin: 20px 0; }
+  .note strong { color: #1a1a4e; }
+  footer { margin-top: 48px; font-size: 12px; color: #aaa; border-top: 1px solid #eee; padding-top: 12px; }
+  @media print {
+    body { margin: 24px auto; }
+    a { color: #1a1a4e; }
+  }
+</style>
+</head>
+<body>
+
+<h1>London Cancer Data Observatory</h1>
+<div class="subtitle">Technical documentation &amp; data source reference</div>
+<div style="margin-bottom:28px;padding:14px 18px;background:#1a1a4e;border-radius:8px;font-size:14px;">
+  <span style="color:#aaa;margin-right:8px;">Access the observatory:</span>
+  <a href="https://smileandgiggle.github.io/London-cancer-map" style="color:white;font-weight:700;text-decoration:none;" target="_blank">smileandgiggle.github.io/London-cancer-map</a>
+</div>
+
+<h2>Overview</h2>
+<p>The London Cancer Data Observatory is an interactive web tool that maps cancer risk indicators, NHS performance and cancer screening uptake across all 33 London boroughs. It supports MP engagement by providing at-a-glance comparisons between boroughs and a one-click briefing document tailored to each constituency's MP.</p>
+<p>To use the tool, click any borough on the map to open its data panel on the right. Use the dropdown at the top to recolour the map by a different indicator. To generate a PDF-ready briefing for an MP, click the <strong>Briefing</strong> button next to their name — this produces a formatted summary including London averages, colour-coded comparisons and CRUK policy asks.</p>
+
+<h2>Data Sources</h2>
+
+<h3>Borough-level indicators &mdash; live via API</h3>
+<p>The following indicators are fetched in real time from the <strong>OHID Fingertips API</strong> (<a href="https://fingertips.phe.org.uk">fingertips.phe.org.uk</a>) each time the tool loads. They will automatically reflect the latest published data without any manual update.</p>
+
+<table>
+  <tr>
+    <th>Indicator</th>
+    <th>Source</th>
+    <th>Geography</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>Deprivation (IMD score)</td>
+    <td>OHID Fingertips &mdash; indicator 93553</td>
+    <td>London borough</td>
+    <td><span class="tag tag-live">Live API</span></td>
+  </tr>
+  <tr>
+    <td>Smoking prevalence (18+)</td>
+    <td>OHID Fingertips &mdash; indicator 92443</td>
+    <td>London borough</td>
+    <td><span class="tag tag-live">Live API</span></td>
+  </tr>
+  <tr>
+    <td>Obesity / overweight prevalence (18+)</td>
+    <td>OHID Fingertips &mdash; indicator 93088</td>
+    <td>London borough</td>
+    <td><span class="tag tag-live">Live API</span></td>
+  </tr>
+</table>
+
+<h3>ICB-level indicators &mdash; live via API</h3>
+<p>Cancer outcomes and screening data are not published at borough level by NHS England or OHID. The tool instead uses the nearest available geography: the five NHS Integrated Care Boards (ICBs) covering London. Each borough is assigned to its ICB, and ICB-level data is fetched live from the same Fingertips API.</p>
+<p>The five London ICBs are: North Central, North East, North West, South East and South West London.</p>
+
+<table>
+  <tr>
+    <th>Indicator</th>
+    <th>Source</th>
+    <th>Geography</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>Cancer incidence rate (per 100,000)</td>
+    <td>OHID Fingertips &mdash; indicator 91337</td>
+    <td>London ICB</td>
+    <td><span class="tag tag-icb">Live API (ICB)</span></td>
+  </tr>
+  <tr>
+    <td>Bowel cancer screening uptake</td>
+    <td>OHID Fingertips &mdash; indicator 92601</td>
+    <td>London ICB</td>
+    <td><span class="tag tag-icb">Live API (ICB)</span></td>
+  </tr>
+  <tr>
+    <td>Breast cancer screening uptake</td>
+    <td>OHID Fingertips &mdash; indicator 91340</td>
+    <td>London ICB</td>
+    <td><span class="tag tag-icb">Live API (ICB)</span></td>
+  </tr>
+  <tr>
+    <td>Cervical cancer screening uptake</td>
+    <td>OHID Fingertips &mdash; indicator 93726</td>
+    <td>London ICB</td>
+    <td><span class="tag tag-icb">Live API (ICB)</span></td>
+  </tr>
+</table>
+
+<div class="note">
+  <strong>Note on ICB data:</strong> Because boroughs share an ICB (e.g. all seven boroughs in North West London display the same ICB figure), these values indicate the broader NHS area's performance rather than the borough's specific outcomes. This is clearly labelled in the tool.
+</div>
+
+<h3>Estimated indicators &mdash; not live</h3>
+<p>Two indicators are not published at borough or ICB level by any national source and are currently shown as estimates based on regional averages. These will not update automatically and should be treated as indicative only.</p>
+
+<table>
+  <tr>
+    <th>Indicator</th>
+    <th>Basis</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>Late-stage diagnosis rate</td>
+    <td>Estimate based on national/regional patterns; borough-level data not available via Fingertips or NCRAS public endpoints</td>
+    <td><span class="tag tag-est">Estimate</span></td>
+  </tr>
+  <tr>
+    <td>62-day referral-to-treatment standard</td>
+    <td>Estimate; NHS England publishes this at trust level only, not borough or ICB</td>
+    <td><span class="tag tag-est">Estimate</span></td>
+  </tr>
+</table>
+
+<h3>MP data &mdash; live via Parliament API</h3>
+<p>MP names, parties and constituencies are fetched from the <strong>UK Parliament Members API</strong> (<a href="https://members-api.parliament.uk">members-api.parliament.uk</a>) on load. A static fallback covering all 75 London MPs (as of July 2024) is embedded in the tool in case the API is unavailable. The tool will reflect any by-election results once Parliament's API is updated.</p>
+
+<h3>CRUK statistics &mdash; manually maintained, no API available</h3>
+<p>The key facts displayed in the briefing document (&ldquo;1 in 2 people will be diagnosed with cancer&rdquo;, &ldquo;3x more likely to survive if diagnosed at stage 1 vs stage 4&rdquo;, &ldquo;360,000 new cases per year&rdquo;) are drawn from CRUK's published statistics pages. <strong>Cancer Research UK does not currently offer a public API for its statistics.</strong> These figures are embedded directly in the tool and will need to be manually reviewed and updated if the underlying CRUK data changes.</p>
+
+<table>
+  <tr>
+    <th>Content</th>
+    <th>Source</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>1 in 2 lifetime diagnosis statistic</td>
+    <td><a href="https://www.cancerresearchuk.org/health-professional/cancer-statistics/incidence">cancerresearchuk.org/statistics/incidence</a></td>
+    <td><span class="tag tag-manual">Manual update needed</span></td>
+  </tr>
+  <tr>
+    <td>3x survival odds (stage 1 vs stage 4)</td>
+    <td><a href="https://www.cancerresearchuk.org/about-cancer/cancer-symptoms/why-is-early-diagnosis-important">CRUK early diagnosis page</a></td>
+    <td><span class="tag tag-manual">Manual update needed</span></td>
+  </tr>
+  <tr>
+    <td>360,000 new UK cases per year</td>
+    <td><a href="https://www.cancerresearchuk.org/health-professional/cancer-statistics">cancerresearchuk.org/statistics</a></td>
+    <td><span class="tag tag-manual">Manual update needed</span></td>
+  </tr>
+  <tr>
+    <td>Policy asks and campaign links</td>
+    <td>CRUK Influencing Team</td>
+    <td><span class="tag tag-manual">Manual update needed</span></td>
+  </tr>
+</table>
+
+<h2>How often does data refresh?</h2>
+<p>Live API data (Fingertips and Parliament) is fetched fresh every time someone opens the tool in their browser. The underlying Fingertips datasets are typically updated annually by OHID, so the figures will reflect the most recently published year automatically. There is no scheduled refresh or cache &mdash; the tool always requests the latest available data on load.</p>
+<p>CRUK statistics and policy asks require a manual edit to the tool's source file if they change. The Influencing Team should review these annually or after any major CRUK statistics publication.</p>
+
+<h2>Accessing the tool</h2>
+<p>The tool is hosted on GitHub Pages and accessible at:<br>
+<strong><a href="https://smileandgiggle.github.io/London-cancer-map">smileandgiggle.github.io/London-cancer-map</a></strong></p>
+<p>It runs entirely in the browser &mdash; no login, no installation required. Live API calls require an internet connection.</p>
+
+<footer>
+  London Cancer Data Observatory &mdash; 2026
+</footer>
+
+</body>
+</html>
